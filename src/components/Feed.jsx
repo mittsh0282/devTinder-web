@@ -1,6 +1,6 @@
 
 
-const Body = () => {
+const Feed = () => {
     return (
         <div>
             Feed

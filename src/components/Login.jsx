@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { useDispatch } from 'react-redux';
-import { addUser } from './utils/userSlice';
+import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router';
-import { BASE_URL } from './utils/constants';
+import { BASE_URL } from '../utils/constants';
 
 
 const Login = () => {
 
     const [emailId, setEmailId] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("")
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -24,7 +25,8 @@ const Login = () => {
             dispatch(addUser(res.data));
             return navigate("/");
         } catch (err) {
-            console.error(err);
+            setError(err.message);
+            console.error(err?.response?.data || "Something went wrong");
         }
     }
     return (
@@ -42,7 +44,7 @@ const Login = () => {
                             <input type="text" value={password} className="input" placeholder="Type here" onChange={(e) => setPassword(e.target.value)} />
                         </fieldset>
                     </div>
-
+                    <p className="text-red-500">ERROR Message is here</p>
                     <div class="card-actions justify-center m-2">
                         <button class="btn btn-primary" onClick={handleLogin}>Login</button>
                     </div>

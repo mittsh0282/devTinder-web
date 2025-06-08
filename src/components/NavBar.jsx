@@ -1,16 +1,32 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+import { removeUser } from "../utils/userSlice";
 
 const NavBar = () => {
 
     const user = useSelector((store) => store.user);
-    console.log(user);
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+          await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+          dispatch(removeUser());
+          return navigate("/login");
+        } catch (err) {
+          // Error logic maybe redirect to error page
+          console.log(err);
+        }
+    };
+    
     return (
         <div class="navbar bg-base-200 shadow-sm">
             <div class="flex-1">
-                <a class="btn btn-ghost text-xl">Dev Tinder</a>
+                <Link to="/" class="btn btn-ghost text-xl">Dev Tinder</Link>
             </div>
             <div class="flex gap-2">
-                {/* <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" /> */}
                 <div class="dropdown dropdown-end mx-5">
                     {user &&
                         
@@ -29,13 +45,13 @@ const NavBar = () => {
                         tabindex="0"
                         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                         <li>
-                            <a class="justify-between">
+                            <Link to="/profile" class="justify-between">
                                 Profile
                                 <span class="badge">New</span>
-                            </a>
+                            </Link>
                         </li>
                         <li><a>Settings</a></li>
-                        <li><a>Logout</a></li>
+                        <li><a onClick={handleLogout}>Logout</a></li>
                     </ul>
                 </div>
             </div>

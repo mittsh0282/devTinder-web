@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import NavBar from './NavBar'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Login from './components/Login'
 import { Provider } from 'react-redux'
 import appStore from './utils/appStore'
 import Feed from './components/Feed'
+import Body from './components/Body'
+import Profile from './components/Profile'
 
 
 function App() {
@@ -15,8 +16,10 @@ function App() {
       <Provider store={appStore}>
         <BrowserRouter basename="/">
           <Routes>
-            <Route path="/" element={<Feed />} >
+            <Route path="/" element={<Body />} >
+              <Route path="/" element={<Feed />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
         </BrowserRouter>
